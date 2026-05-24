@@ -8,7 +8,34 @@
 
 ## 1. Purpose
 
-A public-facing REST API for an employee directory, built with Spring Boot. The primary learning goals are understanding how enterprises structure REST APIs, implement rate limiting as a cross-cutting concern, and design for extensibility toward security and role-based access control.
+### Problem
+
+Knowledge is often scattered across teams within a company, making it difficult to know who to reach out to when encountering a specific problem. Employees — especially interns and new hires — waste time reaching out to multiple people across the organization before finding the right one.
+
+### Solution
+
+A public-facing REST API for an employee directory at Gexa Energy, a residential electricity supplier. Users can look up employees by role, team, and office to quickly identify the right person for a given inquiry — whether they're inside the company or in the broader energy sector.
+
+### Learning Goals
+
+The primary purpose of this project is to understand how enterprises build production APIs: layered architecture, rate limiting as a cross-cutting concern, and designing for extensibility toward authentication, authorization, and role-based access control.
+
+---
+
+## 1a. Target Users
+
+- **Interns and new employees at Gexa Energy** — identify who to reach out to when blocked on a problem
+- **Energy sector professionals** — find the right Gexa contact for a specific domain or inquiry without cold-emailing multiple people
+
+---
+
+## 1b. Milestones
+
+| Milestone | Scope |
+|---|---|
+| M1 | Functional employee directory REST API (CRUD endpoints, PostgreSQL, pagination) |
+| M2 | Rate limiting (token bucket, two tiers, swappable interface) |
+| M3 | Authentication, authorization, and RBAC (stretch goal) |
 
 ---
 
@@ -151,6 +178,10 @@ Path versioning (`v1`) allows breaking changes to ship as `v2` without disruptin
 ---
 
 ## 7. Rate Limiting Design
+
+### Why Rate Limiting Matters
+
+As usage grows toward 100M+ requests, a public API needs safeguards to prevent abuse, protect backend resources from excessive load, and defend against DDoS-style traffic patterns. Rate limiting is the first line of defense before authentication is introduced.
 
 ### Algorithm: Token Bucket
 
