@@ -16,7 +16,7 @@ Knowledge is often scattered across teams within a company, making it difficult 
 
 A public-facing REST API for an employee directory at Gexa Energy, a residential electricity supplier. Users can look up employees by role, team, and office to quickly identify the right person for a given inquiry — whether they're inside the company or in the broader energy sector.
 
-### Learning Goals
+### Goals
 
 The primary purpose of this project is to understand how enterprises build production APIs: layered architecture, rate limiting as a cross-cutting concern, and designing for extensibility toward authentication, authorization, and role-based access control.
 
@@ -41,17 +41,17 @@ The primary purpose of this project is to understand how enterprises build produ
 
 ## 2. Tech Stack
 
-| Concern | Choice | Reason |
-|---|---|---|
-| Language | Java 21 | Current LTS; what enterprises are migrating to |
-| Framework | Spring Boot 3.x | Industry standard for enterprise Java APIs |
-| Build tool | Gradle | Pre-configured in `.gitignore` |
-| Database | PostgreSQL | Production-grade relational DB |
-| ORM | Spring Data JPA | Standard Spring persistence layer |
-| Rate limiting | Bucket4j (core) | Java-native token bucket, in-memory for MVP |
-| Validation | spring-boot-starter-validation | Declarative input validation |
-| Observability | spring-boot-starter-actuator | Health and metrics endpoints |
-| Testing | JUnit 5, Testcontainers, MockMvc | Unit, integration, and contract test layers |
+| Concern | Choice |
+|---|---|
+| Language | Java 21 |
+| Framework | Spring Boot 3.x |
+| Build tool | Gradle |
+| Database | PostgreSQL |
+| ORM | Spring Data JPA |
+| Rate limiting | Bucket4j (core) |
+| Validation | spring-boot-starter-validation |
+| Observability | spring-boot-starter-actuator |
+| Testing | JUnit 5, Testcontainers, MockMvc |
 
 ---
 
@@ -181,11 +181,11 @@ Path versioning (`v1`) allows breaking changes to ship as `v2` without disruptin
 
 ### Why Rate Limiting Matters
 
-As usage grows toward 100M+ requests, a public API needs safeguards to prevent abuse, protect backend resources from excessive load, and defend against DDoS-style traffic patterns. Rate limiting is the first line of defense before authentication is introduced.
+As usage grows, a public API needs safeguards to prevent abuse, protect backend resources from excessive load, and defend against DDoS-style traffic patterns. Rate limiting is the first line of defense before authentication is introduced.
 
 ### Algorithm: Token Bucket
 
-Each client has a bucket with a fixed token capacity. Each request consumes one token. Tokens refill at a steady rate. If the bucket is empty, the request is rejected with `429 Too Many Requests`. Token bucket handles short bursts gracefully — a client can use saved tokens — unlike a fixed window that hard-resets every minute.
+Each client has a bucket with a fixed token capacity. Each request consumes one token. Tokens refill at a steady rate. If the bucket is empty, the request is rejected with `429 Too Many Requests`. If the bucket is full, refilled tokens are discarded — capacity is never exceeded. Token bucket handles short bursts gracefully — a client can use saved tokens — unlike a fixed window that hard-resets every minute.
 
 ### Tiers
 
